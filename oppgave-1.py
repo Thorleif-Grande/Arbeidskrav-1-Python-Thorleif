@@ -1,35 +1,34 @@
+def read_positive_int(prompt):
+    while True:
+        try:
+            number = int(input(prompt))
+
+            if number <= 0:
+                print("Ugyldig input. Skriv inn et positivt heltall, for eksempel 5.")
+                continue
+
+            return number
+
+        except ValueError:
+            print("Ugyldig input. Skriv inn et positivt heltall, for eksempel 5.")
+
+
 def calculate_study_time():
-    while True:
-        try:
-            study_sessions = int(input("Antall studieøkter: "))
-
-            if study_sessions <= 0:
-                print("Antall studieøkter må være større enn 0.")
-                continue
-
-            break
-
-        except ValueError:
-            print("Du må skrive inn et positivt heltall.")
-
-    while True:
-        try:
-            minutes_per_session = int(input("Minutter per økt: "))
-
-            if minutes_per_session <= 0:
-                print("Antall minutter per økt må være større enn 0.")
-                continue
-
-            break
-
-        except ValueError:
-            print("Du må skrive inn et positivt heltall.")
+    study_sessions = read_positive_int("Antall studieøkter: ")
+    minutes_per_session = read_positive_int("Minutter per økt: ")
 
     total_minutes = study_sessions * minutes_per_session
+
     hours = total_minutes // 60
     minutes = total_minutes % 60
 
-    print(f"Samlet tidsbruk: {hours} timer og {minutes} minutter")
+    hour_word = "time" if hours == 1 else "timer"
+    minute_word = "minutt" if minutes == 1 else "minutter"
+
+    print(
+        f"Samlet tidsbruk: {hours} {hour_word} "
+        f"og {minutes} {minute_word}"
+    )
 
 
 def analyze_text():
@@ -37,7 +36,7 @@ def analyze_text():
         text = input("Skriv inn en tekst: ")
 
         if text.strip() == "":
-            print("Teksten kan ikke være tom.")
+            print("Teksten kan ikke være tom eller bare mellomrom. Prøv igjen.")
             continue
 
         break
@@ -46,7 +45,8 @@ def analyze_text():
     characters_without_spaces = len(text.replace(" ", ""))
     lowercase_text = text.lower()
     reversed_text = text[::-1]
-    contains_python = "python" in text.lower()
+    contains_python = "python" in lowercase_text
+    contains_sql = "sql" in lowercase_text
 
     print(f"Antall tegn med mellomrom: {characters_with_spaces}")
     print(f"Antall tegn uten mellomrom: {characters_without_spaces}")
@@ -58,6 +58,11 @@ def analyze_text():
     else:
         print("Teksten inneholder ikke ordet python.")
 
+    if contains_sql:
+        print("Teksten inneholder ordet SQL.")
+    else:
+        print("Teksten inneholder ikke ordet SQL.")
+
 
 def analyze_interval():
     while True:
@@ -66,13 +71,19 @@ def analyze_interval():
             end = int(input("Sluttverdi: "))
 
             if start > end:
-                print("Startverdien kan ikke være større enn sluttverdien.")
+                print(
+                    "Startverdien kan ikke være større enn sluttverdien. "
+                    "Prøv igjen."
+                )
                 continue
 
             break
 
         except ValueError:
-            print("Begge verdiene må være heltall.")
+            print(
+                "Begge verdiene må være heltall, "
+                "for eksempel 3 og 10. Prøv igjen."
+            )
 
     even_numbers = []
     divisible_by_three = []
@@ -87,8 +98,16 @@ def analyze_interval():
 
         total += number
 
-    print(f"Partall: {even_numbers}")
-    print(f"Delelig med 3: {divisible_by_three}")
+    if even_numbers:
+        print(f"Partall: {even_numbers}")
+    else:
+        print("Partall: ingen")
+
+    if divisible_by_three:
+        print(f"Delelig med 3: {divisible_by_three}")
+    else:
+        print("Delelig med 3: ingen")
+
     print(f"Sum: {total}")
 
 
@@ -101,7 +120,7 @@ def main():
         print("3. Analyser tallintervall")
         print("4. Avslutt")
 
-        choice = input("Velg et alternativ: ")
+        choice = input("Velg et alternativ: ").strip()
 
         if choice == "1":
             calculate_study_time()
