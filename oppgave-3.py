@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 
 
 def parse_date(date_text):
+    # Gjør tekst i formatet dd.mm.åååå om til en date-verdi
     return datetime.strptime(date_text, "%d.%m.%Y").date()
 
 
@@ -40,6 +41,8 @@ def calculate_end_time(start_time, duration_minutes):
 
 
 def days_between_dates(first_date, second_date):
+    # abs gjør at antall dager blir positivt uansett hva dato som kommer først
+
     difference = abs((second_date - first_date).days)
     return difference
 

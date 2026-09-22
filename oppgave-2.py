@@ -49,6 +49,8 @@ def register_study_session(study_sessions):
         "status": status
     }
 
+    # Fem eksempeløkter som brukes når programmet starter
+    study_sessions = [...]
     study_sessions.append(new_session)
 
     print("Studieøkten ble registrert.")
