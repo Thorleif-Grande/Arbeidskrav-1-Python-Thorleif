@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 
 
@@ -34,6 +35,16 @@ class Activity:
     # Endrer statusen på aktiviteten til completed
     def mark_completed(self):
         self.status = "completed"
+
+    # Gjør Activity-objektet om til en dictionary som kan lagres i JSON
+    def to_dict(self):
+        return {
+            "title": self.title,
+            "category": self.category,
+            "date": self.date.strftime("%d.%m.%Y"),
+            "estimated_minutes": self.estimated_minutes,
+            "status": self.status
+        }
 
 
 # Hjelpefunksjon for tekstfelt som ikkje kan være tomme
@@ -256,9 +267,104 @@ def complete_activity(activities):
         return
 
 
-def main():
-    # Her ligger Activity-objektene så lenge programmet kjører
+# Viser enkel statistikk over aktivitetene
+def show_statistics(activities):
+    total_minutes = 0
+    completed_count = 0
+
+    for activity in activities:
+        total_minutes += activity.estimated_minutes
+
+        if activity.status == "completed":
+            completed_count += 1
+
+    print()
+    print("===== STATISTIKK =====")
+    print(f"Antall aktiviteter: {len(activities)}")
+    print(f"Samlet estimert tid: {total_minutes} minutter")
+    print(f"Antall fullførte: {completed_count}")
+
+
+# Lagrer aktivitetene til ei JSON-fil
+def save_activities(activities, filename):
+    data = []
+
+    # Activity-objektene må først gjøres om til dictionaries
+    for activity in activities:
+        data.append(activity.to_dict())
+
+    try:
+        with open(filename, "w", encoding="utf-8") as file:
+            json.dump(
+                data,
+                file,
+                ensure_ascii=False,
+                indent=4
+            )
+
+        print(f"Aktivitetene ble lagret til {filename}.")
+
+    except OSError as error:
+        print(f"Kunne ikke lagre datafilen: {error}")
+
+
+# Leser aktiviteter fra JSON-fila og lager Activity-objekter igjen
+def load_activities(filename):
+    try:
+        with open(filename, "r", encoding="utf-8") as file:
+            data = json.load(file)
+
+    except FileNotFoundError:
+        # Første gang programmet kjøres finnes fila kanskje ikkje ennå
+        print(
+            f"Fant ikke datafilen {filename}. "
+            "Starter med en tom samling."
+        )
+        return []
+
+    except json.JSONDecodeError:
+        print(
+            f"Datafilen {filename} inneholder ugyldige data. "
+            "Starter med en tom samling."
+        )
+        return []
+
+    except OSError as error:
+        print(f"Kunne ikke lese datafilen: {error}")
+        return []
+
     activities = []
+
+    for item in data:
+        # Datoen ligger som tekst i JSON og må gjøres om til date igjen
+        activity_date = datetime.strptime(
+            item["date"],
+            "%d.%m.%Y"
+        ).date()
+
+        activity = Activity(
+            item["title"],
+            item["category"],
+            activity_date,
+            item["estimated_minutes"],
+            item["status"]
+        )
+
+        activities.append(activity)
+
+    print(
+        f"Leste inn {len(activities)} aktiviteter "
+        f"fra {filename}."
+    )
+
+    return activities
+
+
+def main():
+    filename = "activities.json"
+
+    # Leser inn tidligere aktiviteter når programmet startar
+    activities = load_activities(filename)
 
     # Menyen kjører heilt til brukeren velger å avslutte
     while True:
@@ -270,7 +376,10 @@ def main():
         print("4. Filtrer etter status")
         print("5. Sorter etter dato eller varighet")
         print("6. Marker aktivitet som fullført")
-        print("7. Avslutt")
+        print("7. Vis statistikk")
+        print("8. Lagre aktiviteter til fil")
+        print("9. Les aktiviteter fra fil")
+        print("10. Avslutt")
 
         choice = input("Velg et alternativ: ").strip()
 
@@ -293,11 +402,22 @@ def main():
             complete_activity(activities)
 
         elif choice == "7":
+            show_statistics(activities)
+
+        elif choice == "8":
+            save_activities(activities, filename)
+
+        elif choice == "9":
+            activities = load_activities(filename)
+
+        elif choice == "10":
             print("Programmet avsluttes.")
             break
 
         else:
-            print("Ugyldig valg. Velg et tall fra 1 til 7.")
+            print(
+                "Ugyldig valg. Velg et tall fra 1 til 10."
+            )
 
 
 main()

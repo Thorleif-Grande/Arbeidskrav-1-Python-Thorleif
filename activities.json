@@ -1,0 +1,23 @@
+[
+    {
+        "title": "Padel",
+        "category": "Trening",
+        "date": "23.09.2026",
+        "estimated_minutes": 90,
+        "status": "planned"
+    },
+    {
+        "title": "Python",
+        "category": "Skole",
+        "date": "24.09.2026",
+        "estimated_minutes": 120,
+        "status": "planned"
+    },
+    {
+        "title": "Pakke Koffert",
+        "category": "Reise",
+        "date": "22.09.2026",
+        "estimated_minutes": 30,
+        "status": "completed"
+    }
+]
