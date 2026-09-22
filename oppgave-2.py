@@ -1,4 +1,8 @@
+# Oppgave 2 - Lister og dictionaries
+
+
 def read_positive_int(prompt):
+    # Spør på nytt heilt til brukeren skriver inn et positivt heltall
     while True:
         try:
             number = int(input(prompt))
@@ -14,6 +18,7 @@ def read_positive_int(prompt):
 
 
 def print_sessions(sessions):
+    # enumerate gir hver studieøkt et nummer når den skrives ut
     for number, session in enumerate(sessions, start=1):
         print(
             f"{number}. Tema: {session['topic']} | "
@@ -22,6 +27,7 @@ def print_sessions(sessions):
         )
 
 
+# Registrer studieøkt
 def register_study_session(study_sessions):
     while True:
         topic = input("Tema: ").strip()
@@ -43,19 +49,19 @@ def register_study_session(study_sessions):
 
         break
 
+    # Hver studieøkt lagres som en dictionary med tre felt
     new_session = {
         "topic": topic,
         "duration_minutes": duration_minutes,
         "status": status
     }
 
-    # Fem eksempeløkter som brukes når programmet starter
-    study_sessions = [...]
     study_sessions.append(new_session)
 
     print("Studieøkten ble registrert.")
 
 
+# Vis studieøkter
 def show_all_sessions(study_sessions):
     if len(study_sessions) == 0:
         print("Ingen studieøkter er registrert.")
@@ -78,6 +84,7 @@ def show_completed_sessions(study_sessions):
     print_sessions(completed_sessions)
 
 
+# Søk etter tema
 def search_sessions(study_sessions):
     search_word = input("Søk etter ord i tema: ").strip().lower()
 
@@ -87,6 +94,7 @@ def search_sessions(study_sessions):
 
     results = []
 
+    # lower gjør at søket ikkje bryr seg om store og små bokstaver
     for session in study_sessions:
         if search_word in session["topic"].lower():
             results.append(session)
@@ -98,11 +106,14 @@ def search_sessions(study_sessions):
     print_sessions(results)
 
 
+# Sorter etter varighet
 def get_duration(session):
+    # Brukes som sorteringsnøkkel for å hente varigheten
     return session["duration_minutes"]
 
 
 def sort_by_duration(study_sessions):
+    # reverse=True gir lengste studieøkt først
     sorted_sessions = sorted(
         study_sessions,
         key=get_duration,
@@ -116,6 +127,7 @@ def sort_by_duration(study_sessions):
     print_sessions(sorted_sessions)
 
 
+# Statistikk for fullførte studieøkter
 def show_completed_statistics(study_sessions):
     total_duration = 0
     number_of_completed = 0
@@ -135,7 +147,9 @@ def show_completed_statistics(study_sessions):
     print(f"Gjennomsnittlig varighet: {average_duration:.1f} minutter")
 
 
+# Meny
 def main():
+    # Fem eksempeløkter som ligger inne når programmet startar
     study_sessions = [
         {
             "topic": "Python basics",
@@ -164,6 +178,7 @@ def main():
         }
     ]
 
+    # Menyen kjører heilt til brukeren velger å avslutte
     while True:
         print()
         print("===== STUDIEØKTER =====")
