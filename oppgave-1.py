@@ -1,4 +1,6 @@
+# Oppgave 1.1 - Beregn tidsbruk
 def read_positive_int(prompt):
+    # Spør på nytt heilt til brukeren skriver inn et positivt heltall
     while True:
         try:
             number = int(input(prompt))
@@ -19,6 +21,7 @@ def calculate_study_time():
 
     total_minutes = study_sessions * minutes_per_session
 
+    # // finner hele timer, mens % finner minuttene som er igjen
     hours = total_minutes // 60
     minutes = total_minutes % 60
 
@@ -31,10 +34,12 @@ def calculate_study_time():
     )
 
 
+# Oppgave 1.2 - Tekstanalyse
 def analyze_text():
     while True:
         text = input("Skriv inn en tekst: ")
 
+        # strip fjerner mellomrom slik at bare mellomrom ikkje blir godkjent
         if text.strip() == "":
             print("Teksten kan ikke være tom eller bare mellomrom. Prøv igjen.")
             continue
@@ -45,6 +50,8 @@ def analyze_text():
     characters_without_spaces = len(text.replace(" ", ""))
     lowercase_text = text.lower()
     reversed_text = text[::-1]
+
+    # Bruker små bokstaver slik at søket ikkje blir påvirket av store bokstaver
     contains_python = "python" in lowercase_text
     contains_sql = "sql" in lowercase_text
 
@@ -64,6 +71,7 @@ def analyze_text():
         print("Teksten inneholder ikke ordet SQL.")
 
 
+# Oppgave 1.3 - Analyser tallintervall
 def analyze_interval():
     while True:
         try:
@@ -90,6 +98,7 @@ def analyze_interval():
     total = 0
 
     for number in range(start, end + 1):
+        # Resten må være 0 for at tallet skal være delelig
         if number % 2 == 0:
             even_numbers.append(number)
 
@@ -111,7 +120,9 @@ def analyze_interval():
     print(f"Sum: {total}")
 
 
+# Oppgave 1.4 - Meny
 def main():
+    # Menyen kjører heilt til brukeren velger å avslutte
     while True:
         print()
         print("===== MENY =====")
