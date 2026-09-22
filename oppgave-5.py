@@ -6,7 +6,14 @@ from datetime import datetime
 
 class Activity:
     # Konstruktøren kjøres når me lager et nytt Activity-objekt
-    def __init__(self, title, category, date, estimated_minutes, status):
+    def __init__(
+        self,
+        title,
+        category,
+        date,
+        estimated_minutes,
+        status="planned"
+    ):
         # self lagrer verdiene som attributter på akkurat denne aktiviteten
         self.title = title
         self.category = category
@@ -19,7 +26,7 @@ class Activity:
         return (
             f"{self.title} | "
             f"Kategori: {self.category} | "
-            f"Dato: {self.date} | "
+            f"Dato: {self.date.strftime('%d.%m.%Y')} | "
             f"Varighet: {self.estimated_minutes} minutter | "
             f"Status: {self.status}"
         )
@@ -44,9 +51,8 @@ def read_date(prompt):
         date_text = input(prompt).strip()
 
         try:
-            # strptime sjekker både formatet og om datoen er gyldig
-            datetime.strptime(date_text, "%d.%m.%Y")
-            return date_text
+            # Gjør teksten om til en faktisk dato som me kan sortere senere
+            return datetime.strptime(date_text, "%d.%m.%Y").date()
 
         except ValueError:
             print(
@@ -55,20 +61,24 @@ def read_date(prompt):
             )
 
 
-# Leser inn varighet og sørger for at me får et positivt heltall
+# Leser inn og sørger for at me får et positivt heltall
 def read_positive_int(prompt):
     while True:
         try:
             number = int(input(prompt))
 
             if number <= 0:
-                print("Varigheten må være et positivt heltall.")
+                print(
+                    "Ugyldig input. Skriv inn et positivt heltall."
+                )
                 continue
 
             return number
 
         except ValueError:
-            print("Varigheten må være et positivt heltall.")
+            print(
+                "Ugyldig input. Skriv inn et positivt heltall."
+            )
 
 
 # Registrerer en ny aktivitet og legger den til i lista
@@ -83,13 +93,12 @@ def register_activity(activities):
         "Estimert varighet i minutter: "
     )
 
-    # Nye aktiviteter startar som planned
+    # Status blir automatisk planned når me lager en ny aktivitet
     activity = Activity(
         title,
         category,
         date,
-        estimated_minutes,
-        "planned"
+        estimated_minutes
     )
 
     activities.append(activity)
