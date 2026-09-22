@@ -121,18 +121,23 @@ def register_activity(activities):
     print("Aktiviteten ble registrert.")
 
 
-# Viser alle aktivitetene som ligger i lista
-def show_activities(activities):
+# Skriver ut ei liste med aktiviteter med valgt overskrift
+def print_activity_list(activities, heading):
     print()
-    print("===== AKTIVITETER =====")
-
-    if len(activities) == 0:
-        print("Ingen aktiviteter er registrert.")
-        return
+    print(f"===== {heading} =====")
 
     # enumerate gjør at aktivitetene får nummer fra 1 og oppover
     for number, activity in enumerate(activities, start=1):
         print(f"{number}. {activity.get_info()}")
+
+
+# Viser alle aktivitetene som ligger i lista
+def show_activities(activities):
+    if len(activities) == 0:
+        print("Ingen aktiviteter er registrert.")
+        return
+
+    print_activity_list(activities, "AKTIVITETER")
 
 
 # Søker etter tekst i både tittel og kategori
@@ -154,11 +159,7 @@ def search_activities(activities):
         print("Ingen aktiviteter passet søket.")
         return
 
-    print()
-    print("===== SØKERESULTAT =====")
-
-    for number, activity in enumerate(results, start=1):
-        print(f"{number}. {activity.get_info()}")
+    print_activity_list(results, "SØKERESULTAT")
 
 
 # Filtrerer aktivitetene etter planned eller completed
@@ -184,14 +185,10 @@ def filter_by_status(activities):
         print(f"Ingen aktiviteter med status {status}.")
         return
 
-    print()
-    print(f"===== {status.upper()} =====")
-
-    for number, activity in enumerate(
+    print_activity_list(
         filtered_activities,
-        start=1
-    ):
-        print(f"{number}. {activity.get_info()}")
+        status.upper()
+    )
 
 
 # Sorterer aktivitetene etter dato eller estimert varighet
@@ -225,14 +222,10 @@ def sort_activities(activities):
         else:
             print("Ugyldig valg. Velg 1 eller 2.")
 
-    print()
-    print("===== SORTERTE AKTIVITETER =====")
-
-    for number, activity in enumerate(
+    print_activity_list(
         sorted_activities,
-        start=1
-    ):
-        print(f"{number}. {activity.get_info()}")
+        "SORTERTE AKTIVITETER"
+    )
 
 
 # Lar brukeren velge hvilken aktivitet som skal fullføres
@@ -335,22 +328,58 @@ def load_activities(filename):
 
     activities = []
 
-    for item in data:
-        # Datoen ligger som tekst i JSON og må gjøres om til date igjen
-        activity_date = datetime.strptime(
-            item["date"],
-            "%d.%m.%Y"
-        ).date()
+    # Går gjennom aktivitetene én og én slik at ei dårlig linje ikkje stopper alt
+    for number, item in enumerate(data, start=1):
+        try:
+            title = item["title"].strip()
+            category = item["category"].strip()
+            date_text = item["date"]
+            estimated_minutes = int(
+                item["estimated_minutes"]
+            )
+            status = item["status"]
 
-        activity = Activity(
-            item["title"],
-            item["category"],
-            activity_date,
-            item["estimated_minutes"],
-            item["status"]
-        )
+            if title == "" or category == "":
+                raise ValueError(
+                    "Tittel og kategori kan ikke være tomme."
+                )
 
-        activities.append(activity)
+            if estimated_minutes <= 0:
+                raise ValueError(
+                    "Varighet må være et positivt heltall."
+                )
+
+            if status not in ["planned", "completed"]:
+                raise ValueError(
+                    "Status må være planned eller completed."
+                )
+
+            # Gjør datoteksten frå JSON-fila tilbake til et date-objekt
+            activity_date = datetime.strptime(
+                date_text,
+                "%d.%m.%Y"
+            ).date()
+
+            activity = Activity(
+                title,
+                category,
+                activity_date,
+                estimated_minutes,
+                status
+            )
+
+            activities.append(activity)
+
+        except (
+            KeyError,
+            ValueError,
+            TypeError,
+            AttributeError
+        ) as error:
+            print(
+                f"Hopper over ugyldig aktivitet {number}: "
+                f"{error}"
+            )
 
     print(
         f"Leste inn {len(activities)} aktiviteter "
@@ -408,6 +437,9 @@ def main():
             save_activities(activities, filename)
 
         elif choice == "9":
+            print(
+                "Merk: aktiviteter som ikke er lagret vil gå tapt."
+            )
             activities = load_activities(filename)
 
         elif choice == "10":
