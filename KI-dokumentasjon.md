@@ -31,17 +31,17 @@ Generelle samtaler som ikke påvirket det som leveres, er ikke tatt med.
 
 ---
 
-# Oppgave 1 – Validering og modulo
+## Oppgave 1 – Validering og modulo
 
-## Positivt heltall
+### Positivt heltall
 
-### Prompt
+#### Prompt
 
 > Jeg bruker positive heltall flere steder. Hvordan kan jeg validere input slik
 > at tekst, 0 og negative tall blir avvist, men brukeren får prøve igjen uten
 > at programmet stopper?
 
-### Relevant del av KI-svaret
+#### Relevant del av KI-svaret
 
 Det ble forklart hvordan `while True` sammen med `try/except ValueError` kan
 brukes for å fortsette å spørre til brukeren skriver et gyldig tall.
@@ -61,7 +61,7 @@ except ValueError:
     ...
 ```
 
-### Hvordan det påvirket løsningen
+#### Hvordan det påvirket løsningen
 
 Jeg brukte dette prinsippet i `read_positive_int()` og gjenbrukte samme type
 validering senere i andre oppgaver.
@@ -70,14 +70,14 @@ Jeg testet selv blant annet med positive tall, `0`, negative tall og tekst.
 
 ---
 
-## Modulo
+### Modulo
 
-### Prompt
+#### Prompt
 
 > Jeg er litt usikker på modulo. Kan du forklare hvorfor `% 2 == 0` betyr
 > partall, og hvordan samme prinsipp brukes for tall som er delelige med 3?
 
-### Relevant del av KI-svaret
+#### Relevant del av KI-svaret
 
 KI forklarte at `%` gir resten etter divisjon.
 
@@ -93,20 +93,20 @@ number % 3 == 0
 
 betyr at tallet kan deles på 3 uten rest.
 
-### Hvordan det påvirket løsningen
+#### Hvordan det påvirket løsningen
 
 Dette ble brukt i tallintervallanalysen i Oppgave 1.
 
 ---
 
-# Oppgave 2 – Valg av datastruktur
+## Oppgave 2 – Valg av datastruktur
 
-### Prompt
+#### Prompt
 
 > Hver studieøkt har tema, varighet og status. Oppgaven tillater dictionary
 > eller tuple. Hva er mest oversiktlig å bruke her, og hvorfor?
 
-### Relevant del av KI-svaret
+#### Relevant del av KI-svaret
 
 Det ble forklart at dictionaries passer godt fordi hvert felt kan få et navn:
 
@@ -126,7 +126,7 @@ session["topic"]
 
 mer lesbart enn å hente verdier fra faste indeksposisjoner.
 
-### Hvordan det påvirket løsningen
+#### Hvordan det påvirket løsningen
 
 Jeg valgte derfor en liste med dictionaries for studieøktene.
 
@@ -135,16 +135,16 @@ statistikk rundt denne strukturen.
 
 ---
 
-# Oppgave 3 – Dato og tid
+## Oppgave 3 – Dato og tid
 
-## Validering av dato
+### Validering av dato
 
-### Prompt
+#### Prompt
 
 > Hvordan kan jeg bruke `datetime` til å sjekke både datoformatet og om datoen
 > faktisk finnes? Jeg vil for eksempel at `31.02.2026` skal bli avvist.
 
-### Relevant del av KI-svaret
+#### Relevant del av KI-svaret
 
 Det ble forklart at `datetime.strptime()` både tolker formatet og gir
 `ValueError` dersom datoen ikke finnes.
@@ -153,7 +153,7 @@ Det ble forklart at `datetime.strptime()` både tolker formatet og gir
 datetime.strptime(date_text, "%d.%m.%Y").date()
 ```
 
-### Hvordan det påvirket løsningen
+#### Hvordan det påvirket løsningen
 
 Dette ble brukt i datovalideringen.
 
@@ -167,14 +167,14 @@ Jeg testet blant annet ugyldige datoer og skuddår:
 
 ---
 
-## Beregning av sluttid
+### Beregning av sluttid
 
-### Prompt
+#### Prompt
 
 > Hvordan kan jeg legge for eksempel 90 minutter til et starttidspunkt med
 > Python sitt standardbibliotek?
 
-### Relevant del av KI-svaret
+#### Relevant del av KI-svaret
 
 Det ble forklart hvordan `timedelta` kan brukes sammen med `datetime`:
 
@@ -183,7 +183,7 @@ start = datetime.strptime(start_time, "%H:%M")
 end = start + timedelta(minutes=duration_minutes)
 ```
 
-### Hvordan det påvirket løsningen
+#### Hvordan det påvirket løsningen
 
 Dette prinsippet ble brukt i `calculate_end_time()`.
 
@@ -191,16 +191,16 @@ Jeg testet blant annet at `14:30 + 90 minutter` ga `16:00`.
 
 ---
 
-# Oppgave 4 – CSV og feilhåndtering
+## Oppgave 4 – CSV og feilhåndtering
 
-## Ugyldige CSV-rader
+### Ugyldige CSV-rader
 
-### Prompt
+#### Prompt
 
 > CSV-filen har noen ugyldige rader. Hvordan kan jeg behandle hver rad separat,
 > slik at én feil rad blir hoppet over uten at hele programmet stopper?
 
-### Relevant del av KI-svaret
+#### Relevant del av KI-svaret
 
 Det ble anbefalt å validere hver rad inne i løkken og bruke målrettet
 `try/except`.
@@ -213,7 +213,7 @@ enumerate(reader, start=2)
 
 er nyttig når første linje i CSV-filen inneholder overskriftene.
 
-### Hvordan det påvirket løsningen
+#### Hvordan det påvirket løsningen
 
 Dette ble brukt i `read_support_requests()`.
 
@@ -224,14 +224,14 @@ Jeg kontrollerte resultatet mot datafila og fikk 15 gyldige henvendelser.
 
 ---
 
-## Feilretting i Oppgave 4.4
+### Feilretting i Oppgave 4.4
 
-### Prompt
+#### Prompt
 
 > Jeg vil forstå feilene i funksjonen i Oppgave 4.4, ikke bare rette dem.
 > Hvorfor er `=`, summeringen og returverdien feil?
 
-### Relevant del av KI-svaret
+#### Relevant del av KI-svaret
 
 Det ble forklart at:
 
@@ -264,23 +264,23 @@ legger verdien til den eksisterende totalen.
 Til slutt måtte riktig variabel returneres, og funksjonen måtte få
 `requests` som argument.
 
-### Hvordan det påvirket løsningen
+#### Hvordan det påvirket løsningen
 
 Jeg rettet funksjonen og brukte forklaringene i README-dokumentasjonen.
 
 ---
 
-# Oppgave 5 – Aktivitetsplanlegger
+## Oppgave 5 – Aktivitetsplanlegger
 
-## Activity-klassen
+### Activity-klassen
 
-### Prompt
+#### Prompt
 
 > Hvordan kan jeg lage en enkel `Activity`-klasse på introduksjonsnivå med
 > attributtene oppgaven krever, uten å gjøre objektorienteringen unødvendig
 > avansert?
 
-### Relevant del av KI-svaret
+#### Relevant del av KI-svaret
 
 Det ble foreslått en klasse med:
 
@@ -294,16 +294,16 @@ status
 
 og en enkel metode for å vise informasjon om aktiviteten.
 
-### Hvordan det påvirket løsningen
+#### Hvordan det påvirket løsningen
 
 Jeg brukte dette som grunnstruktur og bygget resten av aktivitetsplanleggeren
 rundt en liste med `Activity`-objekter.
 
 ---
 
-## Dato som `date`-objekt
+### Dato som `date`-objekt
 
-### Second opinion
+#### Second opinion
 
 Jeg brukte Claude til en ekstra kodegjennomgang av en allerede fungerende
 versjon.
@@ -320,7 +320,7 @@ return datetime.strptime(date_text, "%d.%m.%Y").date()
 
 og å bruke `strftime()` når datoen skulle vises.
 
-### Hvordan det påvirket løsningen
+#### Hvordan det påvirket løsningen
 
 Jeg tok endringen inn fordi den gjorde kronologisk sortering enklere og mer
 robust.
@@ -329,15 +329,15 @@ Jeg testet deretter sortering med aktiviteter på forskjellige datoer.
 
 ---
 
-## JSON-lagring
+### JSON-lagring
 
-### Prompt
+#### Prompt
 
 > Jeg har en liste med `Activity`-objekter og trenger å lagre dem til fil.
 > Hvordan kan jeg gjøre dette enkelt med JSON, spesielt siden datoen nå er et
 > `date`-objekt?
 
-### Relevant del av KI-svaret
+#### Relevant del av KI-svaret
 
 Det ble forklart at JSON ikke kan lagre Python sitt `date`-objekt direkte.
 
@@ -350,7 +350,7 @@ som tekst:
 
 Ved innlasting blir teksten konvertert tilbake til en dato.
 
-### Hvordan det påvirket løsningen
+#### Hvordan det påvirket løsningen
 
 Dette ble brukt i `to_dict()`, `save_activities()` og `load_activities()`.
 
@@ -359,43 +359,58 @@ det på nytt. Aktivitetene ble da lest inn igjen fra `activities.json`.
 
 ---
 
-## Robust innlasting
+### Kodegjennomgang og bedre feilhåndtering
 
-### Second opinion
+#### Second opinion
 
-Ved en senere kodegjennomgang ble det påpekt at en JSON-fil kunne være gyldig
-som JSON, men fremdeles inneholde én aktivitet med for eksempel ugyldig dato
-eller manglende felt.
+Jeg brukte igjen Claude som en second opinion på den ferdige lagringsdelen.
 
-Det ble foreslått å validere hver aktivitet separat i stedet for å la én feil
-stoppe hele innlastingen.
+Gjennomgangen fanget blant annet opp at én ugyldig aktivitet i en ellers
+gyldig JSON-fil fortsatt kunne stoppe innlastingen. Det ble derfor foreslått
+å validere hver aktivitet separat, slik at resten av filen fortsatt kunne
+leses dersom én aktivitet inneholdt ugyldige data.
 
-### Hvordan det påvirket løsningen
+#### Hvordan det påvirket løsningen
 
 `load_activities()` ble forbedret slik at ugyldige aktiviteter kan hoppes over.
+Det ble lagt inn håndtering av blant annet:
 
-Jeg testet dette ved å endre én dato i `activities.json` til:
+```text
+KeyError
+ValueError
+TypeError
+AttributeError
+```
+
+Jeg testet dette ved å åpne `activities.json` og endre én dato til:
 
 ```text
 99.99.2026
 ```
 
-Programmet meldte at aktiviteten var ugyldig og fortsatte med de andre
-aktivitetene.
+Programmet meldte at aktiviteten var ugyldig og fortsatte å lese inn de andre
+aktivitetene uten å krasje. Etter testen satte jeg datoen tilbake til en
+gyldig verdi.
 
-Etter testen satte jeg datoen tilbake til en gyldig verdi.
+Gjennomgangen førte også til noen mindre forbedringer i brukerflyten og
+lesbarheten. Blant annet ble gjentatt utskriftslogikk samlet i
+`print_activity_list()`, det ble lagt inn en advarsel før ny innlasting av
+aktiviteter, og enkelte input- og utskriftsmeldinger ble ryddet opp.
+
+Dette var mindre justeringer som jeg gikk gjennom og testet sammen med resten
+av programmet før de ble beholdt.
 
 ---
 
-# README og dokumentasjon
+## README og dokumentasjon
 
-### Prompt
+#### Prompt
 
 > Kan du hjelpe meg å strukturere README ut fra det jeg faktisk har laget og
 > testet? Jeg trenger blant annet funksjon, kodevalg, testtilfeller, kjente
 > begrensninger og forbedringsmuligheter.
 
-### Relevant del av KI-svaret
+#### Relevant del av KI-svaret
 
 KI ble brukt til å foreslå struktur og formulering av README, blant annet
 seksjoner for:
@@ -410,7 +425,7 @@ seksjoner for:
 - video
 - KI-dokumentasjon
 
-### Hvordan det påvirket løsningen
+#### Hvordan det påvirket løsningen
 
 README ble strukturert med KI-støtte, men innholdet ble kontrollert opp mot
 programmene og testene jeg faktisk hadde gjennomført.
@@ -421,7 +436,7 @@ navn, Git-historikk og plass for videolenke.
 
 ---
 
-# Testing og egen kontroll
+## Testing og egen kontroll
 
 Testing var en viktig del av arbeidsprosessen.
 
@@ -448,7 +463,7 @@ nytt for å kontrollere at endringen fungerte før jeg gikk videre.
 
 ---
 
-# Oppsummering
+## Oppsummering
 
 KI ble først og fremst brukt når jeg ønsket:
 
