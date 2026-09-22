@@ -1,10 +1,40 @@
 # Arbeidskrav 1 – Python
 
+**Levert av: Thorleif K. Grande**
+
 Dette repositoryet inneholder løsningene mine på Arbeidskrav 1 i Python.
 
 Oppgavene dekker blant annet grunnleggende programflyt, lister og dictionaries,
 funksjoner, dato og tid, CSV-behandling, feilhåndtering, objektorientering,
 fillagring og bruk av Git.
+
+---
+
+## Kjøre programmene
+
+Programmene krever Python 3.
+
+Kjør ønsket oppgave fra prosjektmappen, for eksempel:
+
+```text
+python oppgave-1.py
+```
+
+De andre oppgavene kan kjøres på samme måte:
+
+```text
+python oppgave-2.py
+python oppgave-3.py
+python oppgave-4.py
+python oppgave-5.py
+```
+
+Oppgave 4 bruker `supporthenvendelser.csv`. CSV-filen må derfor ligge i samme
+prosjektmappe som `oppgave-4.py` når programmet kjøres.
+
+Oppgave 5 bruker `activities.json` til lagring og innlasting av aktiviteter.
+
+---
 
 ## Filstruktur
 
@@ -22,7 +52,8 @@ Arbeidskrav-1-Python-Thorleif/
 ├── activities.json
 │
 ├── README.md
-└── AI-dokumentasjon.md
+├── AI-dokumentasjon.md
+└── git-historikk.txt
 ```
 
 `supporthenvendelser.csv` brukes i Oppgave 4.
@@ -33,6 +64,8 @@ Arbeidskrav-1-Python-Thorleif/
 og fungerer også som eksempeldatafil.
 
 `AI-dokumentasjon.md` beskriver hvordan AI-verktøy ble brukt under arbeidet.
+
+`git-historikk.txt` inneholder Git-historikken for prosjektet.
 
 ---
 
@@ -52,6 +85,9 @@ verdier ikke stopper programmet.
 
 Jeg brukte egne hjelpefunksjoner for validering slik at samme kode ikke måtte
 skrives flere ganger.
+
+Som en liten egen utvidelse sjekker tekstanalyse-delen også om teksten
+inneholder `SQL`, på samme måte som kontrollen for `Python`.
 
 ---
 
@@ -348,8 +384,8 @@ Sorteringen bruker:
 key=lambda activity: activity.date
 ```
 
-Det betyr at `sorted()` bruker datoen til hvert Activity-objekt når rekkefølgen
-skal bestemmes.
+Det betyr at `sorted()` bruker datoen til hvert `Activity`-objekt når
+rekkefølgen skal bestemmes.
 
 Ved lagring i JSON blir datoen først gjort om til tekst:
 
@@ -505,7 +541,7 @@ Jeg testet blant annet følgende:
     - Forventet resultat: aktiviteten hoppes over uten at programmet krasjer
     - Resultat: bestått
 
-Etter testen med ugyldig JSON-data ble eksempeldatafilen satt tilbake til
+Etter testen med ugyldige JSON-data ble eksempeldatafilen satt tilbake til
 gyldige verdier.
 
 ### Valg jeg gjorde
@@ -579,6 +615,30 @@ grunnstruktur og datohåndtering
 
 Dette gjorde det mulig å teste hver del før neste del ble lagt til.
 
+En egen kopi av Git-historikken leveres i:
+
+```text
+git-historikk.txt
+```
+
+---
+
+## Oppgave 6 – Video
+
+Videoen demonstrerer programmet og forklarer blant annet:
+
+- programflyt
+- fil- og funksjonsstruktur
+- `Activity`-klassen
+- datastrukturer
+- parametere, argumenter og returverdier
+- testing av normal og ugyldig input
+- utfordringer og feilsøking
+- valg og forbedringsmuligheter
+- hvordan AI ble brukt og kvalitetssikret
+
+**Videolenke:** Legges inn før levering.
+
 ---
 
 ## AI-dokumentasjon
@@ -589,5 +649,6 @@ Bruk av AI-verktøy er dokumentert separat i:
 AI-dokumentasjon.md
 ```
 
-Dokumentet beskriver hvilke verktøy som ble brukt, hva de ble brukt til og
-hvordan forslagene ble kontrollert og testet underveis.
+Dokumentet beskriver hvilke verktøy som ble brukt, hva de ble brukt til,
+eksempler på hvordan de påvirket løsningen, og hvordan forslagene ble
+kontrollert og testet underveis.
