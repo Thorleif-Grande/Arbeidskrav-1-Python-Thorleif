@@ -31,6 +31,10 @@ class Activity:
             f"Status: {self.status}"
         )
 
+    # Endrer statusen på aktiviteten til completed
+    def mark_completed(self):
+        self.status = "completed"
+
 
 # Hjelpefunksjon for tekstfelt som ikkje kan være tomme
 def read_text(prompt):
@@ -61,7 +65,7 @@ def read_date(prompt):
             )
 
 
-# Leser inn og sørger for at me får et positivt heltall
+# Leser inn og sørger for at me får eit positivt heltall
 def read_positive_int(prompt):
     while True:
         try:
@@ -93,7 +97,7 @@ def register_activity(activities):
         "Estimert varighet i minutter: "
     )
 
-    # Status blir automatisk planned når me lager en ny aktivitet
+    # Status blir automatisk planned når me lager ein ny aktivitet
     activity = Activity(
         title,
         category,
@@ -106,7 +110,7 @@ def register_activity(activities):
     print("Aktiviteten ble registrert.")
 
 
-# Viser alle aktivitetene som ligg i lista
+# Viser alle aktivitetene som ligger i lista
 def show_activities(activities):
     print()
     print("===== AKTIVITETER =====")
@@ -120,8 +124,140 @@ def show_activities(activities):
         print(f"{number}. {activity.get_info()}")
 
 
+# Søker etter tekst i både tittel og kategori
+def search_activities(activities):
+    search_word = read_text(
+        "Søk etter tittel eller kategori: "
+    ).lower()
+
+    results = []
+
+    for activity in activities:
+        if (
+            search_word in activity.title.lower()
+            or search_word in activity.category.lower()
+        ):
+            results.append(activity)
+
+    if len(results) == 0:
+        print("Ingen aktiviteter passet søket.")
+        return
+
+    print()
+    print("===== SØKERESULTAT =====")
+
+    for number, activity in enumerate(results, start=1):
+        print(f"{number}. {activity.get_info()}")
+
+
+# Filtrerer aktivitetene etter planned eller completed
+def filter_by_status(activities):
+    while True:
+        status = input(
+            "Status (planned/completed): "
+        ).strip().lower()
+
+        if status not in ["planned", "completed"]:
+            print("Status må være planned eller completed.")
+            continue
+
+        break
+
+    filtered_activities = []
+
+    for activity in activities:
+        if activity.status == status:
+            filtered_activities.append(activity)
+
+    if len(filtered_activities) == 0:
+        print(f"Ingen aktiviteter med status {status}.")
+        return
+
+    print()
+    print(f"===== {status.upper()} =====")
+
+    for number, activity in enumerate(
+        filtered_activities,
+        start=1
+    ):
+        print(f"{number}. {activity.get_info()}")
+
+
+# Sorterer aktivitetene etter dato eller estimert varighet
+def sort_activities(activities):
+    if len(activities) == 0:
+        print("Ingen aktiviteter å sortere.")
+        return
+
+    while True:
+        print()
+        print("1. Sorter etter dato")
+        print("2. Sorter etter varighet")
+
+        choice = input("Velg sortering: ").strip()
+
+        if choice == "1":
+            # date er et datoobjekt, så Python kan sortere kronologisk
+            sorted_activities = sorted(
+                activities,
+                key=lambda activity: activity.date
+            )
+            break
+
+        elif choice == "2":
+            sorted_activities = sorted(
+                activities,
+                key=lambda activity: activity.estimated_minutes
+            )
+            break
+
+        else:
+            print("Ugyldig valg. Velg 1 eller 2.")
+
+    print()
+    print("===== SORTERTE AKTIVITETER =====")
+
+    for number, activity in enumerate(
+        sorted_activities,
+        start=1
+    ):
+        print(f"{number}. {activity.get_info()}")
+
+
+# Lar brukeren velge hvilken aktivitet som skal fullføres
+def complete_activity(activities):
+    if len(activities) == 0:
+        print("Ingen aktiviteter er registrert.")
+        return
+
+    show_activities(activities)
+
+    while True:
+        activity_number = read_positive_int(
+            "Nummer på aktiviteten som er fullført: "
+        )
+
+        # Brukeren ser nummer fra 1, mens lista starter på indeks 0
+        if activity_number > len(activities):
+            print("Det finnes ingen aktivitet med dette nummeret.")
+            continue
+
+        activity = activities[activity_number - 1]
+
+        if activity.status == "completed":
+            print("Denne aktiviteten er allerede fullført.")
+            return
+
+        activity.mark_completed()
+
+        print(
+            f"{activity.title} er markert som fullført."
+        )
+        return
+
+
 def main():
-    # Her ligg Activity-objektene så lenge programmet kjører
+    # Her ligger Activity-objektene så lenge programmet kjører
     activities = []
 
     # Menyen kjører heilt til brukeren velger å avslutte
@@ -130,7 +266,11 @@ def main():
         print("===== AKTIVITETSPLANLEGGER =====")
         print("1. Registrer aktivitet")
         print("2. Vis aktiviteter")
-        print("3. Avslutt")
+        print("3. Søk etter tittel eller kategori")
+        print("4. Filtrer etter status")
+        print("5. Sorter etter dato eller varighet")
+        print("6. Marker aktivitet som fullført")
+        print("7. Avslutt")
 
         choice = input("Velg et alternativ: ").strip()
 
@@ -141,11 +281,23 @@ def main():
             show_activities(activities)
 
         elif choice == "3":
+            search_activities(activities)
+
+        elif choice == "4":
+            filter_by_status(activities)
+
+        elif choice == "5":
+            sort_activities(activities)
+
+        elif choice == "6":
+            complete_activity(activities)
+
+        elif choice == "7":
             print("Programmet avsluttes.")
             break
 
         else:
-            print("Ugyldig valg. Velg 1, 2 eller 3.")
+            print("Ugyldig valg. Velg et tall fra 1 til 7.")
 
 
 main()
