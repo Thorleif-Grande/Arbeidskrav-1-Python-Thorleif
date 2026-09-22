@@ -7,6 +7,7 @@ def parse_date(date_text):
 
 
 def read_date(prompt):
+    # Spør på nytt heilt til brukeren skriver inn en gyldig dato
     while True:
         date_text = input(prompt)
 
@@ -36,13 +37,15 @@ def read_positive_int(prompt):
 
 def calculate_end_time(start_time, duration_minutes):
     start = datetime.strptime(start_time, "%H:%M")
+
+    # Legger varigheten til starttiden for å finne sluttiden
     end = start + timedelta(minutes=duration_minutes)
+
     return end.strftime("%H:%M")
 
 
 def days_between_dates(first_date, second_date):
-    # abs gjør at antall dager blir positivt uansett hva dato som kommer først
-
+    # abs gjør at antall dager blir positivt uansett hvilken dato som kommer først
     difference = abs((second_date - first_date).days)
     return difference
 
